@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "Media_Type"
+          AttributeType: "S"
+        - AttributeName: "File_Size_Limit"
+          AttributeType: "N"
+      KeySchema:
+        - AttributeName: "Media_Type"
+          KeyType: "HASH"
+        - AttributeName: "File_Size_Limit"
+          KeyType: "RANGE"
+      TableName: "FileSpecification_To_Gluejob_Mapping"
+      # BillingMode: PROVISIONED/ PAY_PER_REQUEST
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+
