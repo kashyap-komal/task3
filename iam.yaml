@@ -1,0 +1,45 @@
+Resources:
+  RoleForGlueJobCrawler:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - glue.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Description: The IAM Role which has all permissions needed to run glue crawler & glue job
+      RoleName: AWSGlueServiceRole-RoleToRunGlueJobCrawlerFullS3
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+
+  RoleForLambdaFunctions:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Description: The IAM Role which allows Lambda Function to read from dynamodb, run Athena queries, run Glue Job and Crawler, publish failure alert to sns topic.
+      RoleName: RoleToInvokeLambdaGlueRunAthenaFullSNS
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AmazonSNSFullAccess
+        - !Sub
+          - 'arn:aws:iam::${AWS::AccountId}:policy/${PolicyName}'
+          - PolicyName: !Ref PolicyForAthenaQueryRunAccess
+
+
+
