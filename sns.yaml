@@ -1,0 +1,10 @@
+Resources:
+  SNSTopicForGlueJobFailureEmail:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: GlueJobFailureEmailNotification
+      Subscription:
+        - Endpoint: geurecruitkomalkumari@gmail.com
+          Protocol: email
+
+
