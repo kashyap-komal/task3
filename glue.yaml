@@ -1,0 +1,37 @@
+Resources:
+  GlueJobToProcessCSV:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: 3
+        ScriptLocation: s3://all-python-scripts/week3/csv_to_parque_gluejob.py
+      Description: Glue Job To Process CSV Files
+      GlueVersion: 2.0
+      Name: GlueJobForCSVFiles
+      Role: !GetAtt RoleForGlueJobCrawler.Arn
+      Timeout: 2 # minutes
+      MaxRetries: 0
+
+
+  DatabaseForCrawler: #database to store crawler's output
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId # The ID of the Data Catalog in which the database resides.
+      # Each AWS account has one AWS Glue Data Catalog per AWS Region.
+
+      DatabaseInput:
+        Name: db-for-crawler
+
+  GlueCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      DatabaseName: !Ref DatabaseForCrawler
+      Description: crawler for output-folder
+      Name: myCrawler
+      Role: !GetAtt RoleForGlueJobCrawler.Arn
+      Targets: #TO specify data stores to crawl.
+        S3Targets:
+          - Path: !Sub
+              - 's3://${BucketName}/'
+              - BucketName: !Ref outputS3Bucket
