@@ -1,0 +1,16 @@
+Resources:
+  PolicyForAthenaQueryRunAccess:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'athena:StartQueryExecution'
+              - 'athena:StopQueryExecution'
+              - 'athena:GetQueryExecution'
+            Resource: '*'
+      PolicyName: CustomAthenaQueryRunAccessPolicy
+      #Roles:
+      #- !Ref RoleForLambdaFunctions
