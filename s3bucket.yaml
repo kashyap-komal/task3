@@ -1,0 +1,19 @@
+Resources:
+  inputS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref inputBucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt LambdaFunctionToTriggerGlueJob.Arn
+
+  outputS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: output-data-s3bucket
+
+  athenaResultS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: athena-query-results-buckett
