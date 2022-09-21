@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+
+Resources:
+  datastores:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/dynamodb.yaml
+      TimeoutInMinutes: '60'
+
+  mybuckets:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/s3bucket.yaml
+      Parameters:
+        LambdaARN: !GetAtt mylambda.Outputs.LambdaARN
+    DependsOn:
+      -mylambda
+
+
+  mylambda:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL:  https://mynucket.s3.ap-south-1.amazonaws.com/lambda.yaml
+      TimeoutInMinutes: '60'
+
+
+  gluejob:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/glue.yaml
+      Parameters:
+        GlueARN: !GetAtt mybuckets.Outputs.GlueARN
+    DependsOn:
+      -mybuckets
+
+
+  iamjob:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/iam.yaml
+      TimeoutInMinutes: '60'
+
+
+  mysns:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/sns.yaml
+      TimeoutInMinutes: '60'
+
+  mypolicy:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/policy.yaml
+      Parameters:
+        RoleARN: !GetAtt iamjob.Outputs.RoleARN
+      DependsON:
+        -iamjob
+
+  myconfig:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/config.yaml
+      Parameters:
+        LambdaARN: !GetAtt mylambda.Outputs.LambdaARN
+      DependsON:
+        -mylambda
+
+
+  mypermission:
+    Type: AWS::Cloudformation::Stack
+    Properties:
+      TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/permission.yaml
+      Parameters:
+        LambdaARN: !GetAtt mylambda.Outputs.LambdaARN
+      DependsON:
+        -mylambda
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
