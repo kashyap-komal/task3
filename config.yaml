@@ -1,0 +1,7 @@
+Resources:
+  asyncconfig:
+    Type: AWS::Lambda::EventInvokeConfig
+    Properties:
+      FunctionName: !Ref LambdaFunctionToTriggerGlueJob
+      MaximumRetryAttempts: 0
+      Qualifier: $LATEST
