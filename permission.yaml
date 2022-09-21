@@ -1,0 +1,10 @@
+Resources:
+  AllowS3ToCallLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaFunctionToTriggerGlueJob.Arn
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub
+        - 'arn:aws:s3:::${inputS3BucketName}'
+        - inputS3BucketName: !Ref inputBucketName
