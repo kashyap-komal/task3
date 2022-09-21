@@ -1,0 +1,14 @@
+Resources:
+  LambdaFunctionToTriggerGlueJob:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: LambdaFuncToTriggerGlueJob
+      Code:
+        S3Bucket: all-python-scripts
+        S3Key: week3/trigger-glue-job-lambda.zip
+      Description: This Function is called whenever an object lands on s3, to run glue job based on file type & size.
+      Handler: trigger-glue-job-lambda.lambda_handler
+      Role: !GetAtt RoleForLambdaFunctions.Arn
+      Runtime: python3.9
+      Timeout: 300
+
