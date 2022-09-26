@@ -3,13 +3,13 @@ Transform: 'AWS::Serverless-2016-10-31'
 
 Resources:
   datastores:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/dynamodb.yaml
       TimeoutInMinutes: '60'
 
   mybuckets:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/s3bucket.yaml
       Parameters:
@@ -19,14 +19,14 @@ Resources:
 
 
   mylambda:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL:  https://mynucket.s3.ap-south-1.amazonaws.com/lambda.yaml
       TimeoutInMinutes: '60'
 
 
   gluejob:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/glue.yaml
       Parameters:
@@ -36,20 +36,20 @@ Resources:
 
 
   iamjob:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/iam.yaml
       TimeoutInMinutes: '60'
 
 
   mysns:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/sns.yaml
       TimeoutInMinutes: '60'
 
   mypolicy:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/policy.yaml
       Parameters:
@@ -58,7 +58,7 @@ Resources:
         -iamjob
 
   myconfig:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/config.yaml
       Parameters:
@@ -68,7 +68,7 @@ Resources:
 
 
   mypermission:
-    Type: AWS::Cloudformation::Stack
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://mynucket.s3.ap-south-1.amazonaws.com/permission.yaml
       Parameters:
